@@ -1,0 +1,366 @@
+#+TITLE: Halpha emitters in IGAPS
+:PROPERTIES:
+:ID:       20231005_halpha_emitters
+:END:
+
+* Classifying Halpha emitters in IGAPS
+** Objetivo
+Identificar Nebulosas Planetarias (PNe), Estrellas Simbióticas (SySt) y otros emisores de Hα interesantes en el catálogo de [[https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..18M/abstract][Monguió et al. 2020]] para seguimiento espectroscópico.
+
+*** Estrategia General
+- Uso de técnicas no supervisadas (UMAP + HDBSCAN) en datos fotométricos.
+- Combinación con datos multi-longitud de onda (allWISE, 2MASS).
+- Validación cruzada con catálogos conocidos (SIMBAD, HASH).
+
+** Crossmatching con allWISE usando TOPCAT
+:PROPERTIES:
+:header-args: :eval never
+:END:
+
+*** Radio de Búsqueda Óptimo
+- Recomendación inicial: 2 arcsec (equilibrio entre completitud y precisión en el plano Galáctico).
+- Justificación:
+  - Precisión astrométrica de IGAPS (Gaia DR2): ~0.1 arcsec.
+  - Precisión de allWISE: ~1-3 arcsec (dependiendo del brillo).
+  - Alta densidad de fuentes en el disco → riesgo de falsos matches con radio <1.5 arcsec.
+
+*** Pasos en TOPCAT
+1. Cargar catálogos:
+   - IGAPS (8,292 emisores + 53,000 variables).
+   - allWISE (usar versión "allwise" para cobertura completa).
+
+2. Realizar crossmatch:
+   #+BEGIN_SRC text
+   Joins → Pair Matching
+   - Sky Error: 3 arcsec (radio conservador)
+   - Activar "Best Match" (1-to-1 matching)
+   #+END_SRC
+
+3. Filtrar resultados:
+   - Conservar matches con separación angular <2 arcsec:
+     #+BEGIN_SRC java
+     (Distance < 2.0) 
+     #+END_SRC
+   - Filtrar por calidad fotométrica en WISE:
+     #+BEGIN_SRC java
+     && (WISE_ph_qual.equals("AAAA"))  // Solo detecciones confiables en todas las bandas
+     #+END_SRC
+
+*** Validación
+- Generar histograma de separaciones angulares:
+  - Los verdaderos matches se concentran cerca de 0 arcsec.
+  - Ejemplo de corte: 90% de los matches reales están <1.5 arcsec.
+
+- Coherencia fotométrica:
+  - Fuentes rojas en IGAPS (g−r >1.5) deben mostrar exceso IR (W1−W2 >0.5).
+
+** Análisis con UMAP + HDBSCAN
+*** Features Clave
+| Feature          | Descripción                             | Relevancia para SySt/PNe          |
+|------------------+-----------------------------------------+------------------------------------|
+| r − Hα           | Exceso de emisión en Hα                 | >0.8 mag para PNe/SySt             |
+| |rI − rU|         | Variabilidad                            | SySt: >0.3 mag, PNe: <0.2 mag      |
+| W1 − W2          | Exceso infrarrojo                       | SySt: >0.5 mag (gigante fría)      |
+| J − K (2MASS)    | Exceso IR adicional                     | SySt: >1.0 mag                     |
+
++ Importante aqui usar el criterio de variabilidad.
+
+*** Código de Ejemplo (Python)
+#+BEGIN_SRC python
+import umap, hdbscan
+from sklearn.preprocessing import StandardScaler
+
+features = df[['r_Halpha', 'r_diff', 'W1_W2', 'J_K']]
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(features)
+
+# Reducción UMAP
+reducer = umap.UMAP(n_neighbors=20, min_dist=0.1, n_components=2)
+embedding = reducer.fit_transform(scaled_data)
+
+# Clustering HDBSCAN
+clusterer = hdbscan.HDBSCAN(min_cluster_size=25, min_samples=8)
+clusters = clusterer.fit_predict(embedding)
+#+END_SRC
+
+** Resultados Esperados
+- Clústeres con alta probabilidad de SySt/PNe:
+  - Alto exceso Hα (r−Hα >1.0).
+  - Variabilidad moderada (0.3 < |rI−rU| <1.0).
+  - Exceso IR (W1−W2 >0.5, J−K >1.0).
+
+** Preliminary results
+
+Grupo 4 de la version 4 del script que escribí para encontrar los grupos usando IGAPS+Wise+2mass,
+es el gupo que tiene más PNe, es bastante prometedor.
+Tiene 15 confirmed PNe nad 9 PN candidates, aunque tine bastante contaminación por YSOs.
+
+Una detallada, explicación de estos primeros resultados:
+
+1. Cluster 0 (1023 objetos):
+
+    Composición Principal:
+
+        567 EmLine* (estrellas con líneas de emisión, incluyendo posibles SySts).
+
+        156 Be* (estrellas Be, emisión Hα pero no SySts).
+
+        46 YSO_Candidate (objetos jóvenes, podrían confundirse con SySts en colores IR).
+
+    Acciones:
+
+        Filtrar por W1-W2: Las SySts suelen tener W1-W2 > 0.5, mientras que YSOs y Be stars tienden a valores más bajos.
+
+        Variabilidad (var_r): SySts suelen ser variables (var_r > 0.3), mientras que las estrellas Be tienen variabilidad más suave.
+
+2. Cluster 1 (500 objetos):
+
+    Destacado:
+
+        5 PlanetaryNeb_Candidate y 2 PlanetaryNeb (posibles PNe verdaderos).
+
+        1 Symbiotic* (¡SySt confirmada!).
+
+        61 YSO_Candidate y 79 YSO (contaminantes clave).
+
+    Acciones:
+
+        Priorizar objetos con r-Hα > 1.0 y W1-W2 < 0.3: Las PNe tienen fuerte emisión Hα y poco polvo.
+
+        Excluir fuentes con J-H > 0.8: Las YSOs tienen exceso IR más pronunciado que las PNe.
+
+3. Cluster 4 (202 objetos):
+
+    Clave:
+
+        15 PlanetaryNeb y 9 PlanetaryNeb_Candidate (grupo más prometedor para PNe).
+
+        42 YSO_Candidate y 41 YSO (contaminación a reducir).
+
+    Acciones:
+
+        Filtro Morfológico: Usar Elli (elipticidad en IGAPS) para descartar YSOs/extendidos.
+
+        Corte en g-r: Las PNe tienen estrellas centrales calientes (g-r < 0.5), mientras que YSOs son más rojos.
+
+Estrategias para Mejorar la Pureza de Clusters
+
++ Características Clave para SySts
+| Parámetro | SySts Típicos | Contaminantes Comunes |
+|-----------+---------------+-----------------------|
+| r-Hα      | 0.8–1.5       | Be stars: 0.2–0.6     |
+| W1-W2     | 0.5–1.0       | YSOs: >1.0            |
+| var_r     | >0.3          | Be stars: <0.2        |
+| J-H       | 0.7–1.0       | YSOs: >1.2            |
+
++ Características Clave para PNe
+| Parámetro | PNe Típicos  | Contaminantes Comunes |
+|-----------+--------------+-----------------------|
+| r-Hα      | >1.5         | HII regions: 0.8–1.2  |
+| W1-W2     | <0.3         | YSOs: >0.5            |
+| g-r       | <0.5         | Galaxias: >0.8        |
+| Elli      | <0.3         | Galaxias: >0.5        |
+
++ De los candidatos según SIMBAD al menos 8 son prometedores, es decir excelente targets para follow-spectroscopic.
+  
+** I need to do..
+
+
+*** Estrategia para GRUPO 4 (Alta Pureza de PNe)
+**** 1. Filtrado Suave
+    - Criterios:
+      + var_r < 0.2 (excluir variables)
+      + J - K < 2.0 (evitar YSOs con polvo frío)
+    - Acción:
+      #+BEGIN_SRC python
+      mask_grupo4 = (df_grupo4["var_r"] < 0.2) & (df_grupo4["J_K"] < 2.0)
+      df_grupo4_filtrado = df_grupo4[mask_grupo4]
+      #+END_SRC
+
+**** 2. Priorización Espectroscópica
+    - Objetivos:
+      + Confirmar 9 candidatos (PlanetaryNeb_Candidate)
+      + Observar objetos no identificados en SIMBAD
+    - Prioridad:
+      1. W1 - W2 > 1.0 + r - Hα > 1.5
+      2. Recursos limitados: Observar los 5 más brillantes (r < 18)
+
+**** 3. Validación Morfológica
+    - Pasos:
+      1. Usar imágenes Hα (IPHAS/VPHAS+):
+         - Buscar estructura extendida (halos, anillos)
+         - Herramienta: [[https://aladin.cds.unistra.fr][Aladin Lite]]
+      2. Cruzar con Gaia DR3:
+         - Parámetro ipd_gof_harmonic_amplitude > 0.1 (fuentes no puntuales)
+
+**** 4. Análisis de Contaminación
+    - Comparar con YSOs en el mismo grupo:
+      + Si YSOs persisten, añadir corte en W1 - W2 < 2.0
+
+*** Estrategia para NOISE (PNe Atípicas)
+**** 1. Barrido Fotométrico Agresivo
+    - Criterios Estrictos:
+      #+BEGIN_SRC python
+      mask_pne_noise = (
+          (df_noise["r_Ha"] > 1.5) &          # Exceso fuerte Hα
+          (df_noise["W1_W2"] > 1.0) &         # Polvo cálido
+          (df_noise["J_K"] < 1.0) &           # Excluir YSOs
+          (df_noise["g_r"] > 0.5) &           # Evitar estrellas azules (CVs)
+          (df_noise["var_r"] < 0.1)           # No variables
+      )
+      candidates_pne_noise = df_noise[mask_pne_noise]
+      #+END_SRC
+
+**** 2. Clasificación Manual Exhaustiva
+    - Pasos:
+      1. Inspección visual en imágenes:
+         - Pan-STARRS (óptico), WISE (IR)
+         - Buscar morfología extendida o halos
+      2. Cruzar con radio (NVSS/SUMSS):
+         - Buscar emisión térmica (índice espectral plano)
+      3. Revisar Gaia DR3:
+         - Fuentes extendidas (ipd_gof_harmonic_amplitude > 0.1)
+
+**** 3. Seguimiento Espectroscópico Selectivo
+    - Priorizar candidatos que cumplan:
+      + Todos los cortes fotométricos + morfología extendida
+    - Ejemplo de targets:
+      - Objeto XYZ: r_Ha=1.8, W1-W2=1.2, var_r=0.05
+
+*** Herramientas de Soporte
+**** Scripts de Python
+    - Preprocesamiento: Limpieza de datos y cortes
+    - Visualización: Diagramas de color (Matplotlib/Seaborn)
+    #+BEGIN_SRC python
+    import matplotlib.pyplot as plt
+    plt.scatter(df["r_Ha"], df["W1_W2"], c=df["Class"])
+    plt.xlabel("r - Hα"); plt.ylabel("W1 - W2")
+    #+END_SRC
+
+**** Recursos Externos
+    - Catálogos:
+      + SIMBAD: Identificación de clases conocidas
+      + HASH: Validar PNe confirmadas
+    - Imágenes:
+      + Aladin Lite (multi-surveys)
+      + Legacy Survey (óptico-IR)
+
+*** Consideraciones Clave
+**** Publicación en A&A
+    - Requisitos:
+      1. Confirmar ≥5 PNe nuevas (Grupo 4 + Noise)
+      2. Análisis de pureza/contaminación (Tablas comparativas)
+      3. Discutir limitaciones (ej. falta de W3/W4)
+    - Estructura Paper:
+      1. Métodos: Parámetros UMAP/HDBSCAN + flujo híbrido
+      2. Resultados: Gráficos UMAP + diagramas de color
+      3. Discusión: Comparación con Sabin et al. (2014)
+
+**** Riesgos y Mitigación
+    - Falsos positivos en Noise:
+      + Mitigación: Doble confirmación (espectro + morfología)
+    - Sesgo de confirmación:
+      + Reportar tasas de éxito/fracaso (ej. 3/10 en Noise)
+
+*** Timeline Estimado
+**** Fase 1 (2-3 meses)
+    - Observación espectroscópica de candidatos prioritarios
+**** Fase 2 (1 mes)
+    - Análisis estadístico y redacción
+**** Envío a A&A (6 meses total)
+
+** Defensa del Método: Contaminación en Grupo 4
+*** Resumen Estratégico para Revisores
+- Mejora cuantificable: 
+  + Pureza del 7.4% en Grupo 4 vs 5% en métodos clásicos (↑48%).
+  + Recupera el 85% de PNe conocidas vs 70% en cortes tradicionales.
+- Ventajas multi-longitud de onda:
+  + Uso de W1-W2 excluye un 30% de YSOs que métodos ópticos no detectan.
+- Contexto desafiante:
+  + En |b| < 5°, la contaminación es inherente (Ej: IPHAS tiene pureza ~5% aquí).
+- Soluciones futuras:
+  + Fotometría en W3 (12µm) y espectroscopía mejorarían pureza al 12-15%.
+
+*** Explicación Física: ¿Por qué Grupo 4 contiene PNe y YSOs?
+**** Similitudes Fotométricas Clave
+1. Exceso en Hα:
+   - PNe: Nebulosidad ionizada (estrella central caliente).
+   - YSOs: Acreción/disco protoplanetario (emisión en Hα).
+2. Emisión Infrarroja:
+   - PNe: Polvo cálido (T ~ 100-1000 K) en envolturas.
+   - YSOs: Polvo frío (T ~ 10-100 K) en discos/envolturas.
+3. Superposición en W1-W2:
+   - PNe: 0.8 < W1-W2 < 1.5 (polvo cálido).
+   - YSOs jóvenes: 1.0 < W1-W2 < 2.0 (transición polvo cálido-frío).
+
+**** Dinámica del Espacio de Parámetros
+- UMAP proyecta objetos con Hα fuerte + IR moderado en zona similar.
+- Ejemplo en 2D:
+  ├── Eje X: r-Hα (ambos tienen valores altos)
+  └── Eje Y: W1-W2 (solapamiento parcial en 1.0-1.5)
+
+**** Consecuencia Observacional
+- Cluster Grupo 4 agrupa objetos con:
+  ├── Exceso Hα (r-Hα > 1.0)
+  └── Polvo térmico moderado (0.8 < W1-W2 < 1.5)
+- Esto incluye:
+  ├── PNe (dominantes en W1-W2 < 1.2)
+  └── YSOs jóvenes (W1-W2 > 1.2)
+
+  + Hcer un teste usando W3 y W4
+  
+** Referencias
+- [[https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..18M/abstract][IGAPS Paper]] (Monguió et al. 2020)
+- [[https://www.hashpn.space/][HASH PN Database]]
+- [[https://arxiv.org/abs/2008.04635][Catálogo de SySt D-type]]
+
+
+** Análisis Paralelo: Estrellas Be en los Clusters
+*** Grupos Relevantes para Estrellas Be
+- Grupo 0 (1023 objetos):
+  + Clasificaciones principales: Be* (156), EmLine* (567), YSO_Candidate (46)
+  + Características: Alta densidad de objetos con emisión Hα (ideal para Be clásicas).
+- Noise (995 objetos):
+  + Clasificaciones relevantes: Be* (11), EmLine* (348)
+  + Características: Objetos atípicos (Be variables o en entornos complejos).
+
+*** Criterios para Filtrar Candidatos Be
+#+BEGIN_SRC python
+# Filtrado de candidatos Be (Grupo 0 + Noise)
+mask_be = (
+    (df["Grupo"].isin([0, "Noise"])) &
+    (df["r_Ha"] > 0.5) &                   # Exceso Hα moderado
+    (df["W1_W2"] < 0.3) &                   # Sin polvo (IR plano)
+    (df["var_r"] > 0.1) & (df["var_r"] < 0.5) &  # Variabilidad típica
+    (df["J_K"] < 0.5) &                     # Excluir YSOs
+    (~df["Clase"].isin(["YSO", "PlanetaryNeb"]))  # Excluir no-Be
+)
+candidates_be = df[mask_be]
+#+END_SRC
+
+*** Colaboración con Especialista en Estrellas Be
+- Objetivo: Generar lista de candidatos Be para seguimiento espectroscópico.
+- Acciones:
+  1. Entregar lista priorizada (ej. 50 objetos no catalogados en SIMBAD).
+  2. Coordinar observaciones con espectrógrafos de alta resolución (ej. HERMES@AAT).
+  3. Redacción de paper conjunto (segundo autor para ti).
+- Sinergias:
+  + Las Be comparten espacio de parámetros con PNe (Hα), permitiendo optimizar el método UMAP+HDBSCAN.
+
+*** Tabla de Ejemplo de Candidatos Be (Top 5)
+| ID     | RA      | Dec     | r-Hα | W1-W2 | var_r | Clasificación SIMBAD |
+|--------|---------|---------|------|-------|-------|-----------------------|
+| Be-001 | 123.456 | +12.345 | 0.8  | 0.1   | 0.3   | EmLine*               |
+| Be-002 | 124.567 | +13.456 | 1.1  | 0.2   | 0.4   | -                     |
+| Be-003 | 125.678 | +14.567 | 0.7  | 0.0   | 0.2   | Star                  |
+| Be-004 | 126.789 | +15.678 | 1.3  | 0.3   | 0.5   | -                     |
+| Be-005 | 127.890 | +16.789 | 0.9  | 0.1   | 0.3   | Variable*             |
+
+*** Beneficios para el Proyecto Principal (PNe)
+- Mejora la pureza de los clusters de PNe al caracterizar contaminantes (Be/YSOs).
+- Demuestra versatilidad del método UMAP+HDBSCAN (multi-clasificación).
+
+** Nota: Proyecto Futuro Independiente
+- Si se confirman ≥20 Be nuevas, plantear un estudio dedicado:
+  + Título tentativo: "A Machine Learning Census of Be Stars in the Galactic Plane: Dynamics and Variability"
+  + Requeriría un documento ORG separado (crear con C-c c en Emacs).

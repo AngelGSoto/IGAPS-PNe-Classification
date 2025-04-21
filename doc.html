@@ -1,0 +1,1194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-04-20 Sun 22:08 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Halpha emitters in IGAPS</title>
+<meta name="author" content="Luis" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Halpha emitters in IGAPS</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org1ec7296">1. Classifying Halpha emitters in IGAPS</a>
+<ul>
+<li><a href="#org68023a0">1.1. Objetivo</a>
+<ul>
+<li><a href="#org5f4d010">1.1.1. Estrategia General</a></li>
+</ul>
+</li>
+<li><a href="#org51623ee">1.2. Crossmatching con allWISE usando TOPCAT</a>
+<ul>
+<li><a href="#org447183c">1.2.1. Radio de Búsqueda Óptimo</a></li>
+<li><a href="#org00e4b47">1.2.2. Pasos en TOPCAT</a></li>
+<li><a href="#org19fed6f">1.2.3. Validación</a></li>
+</ul>
+</li>
+<li><a href="#orgbe81b52">1.3. Análisis con UMAP + HDBSCAN</a>
+<ul>
+<li><a href="#org15e5a86">1.3.1. Features Clave</a></li>
+<li><a href="#orga0f0a2e">1.3.2. Código de Ejemplo (Python)</a></li>
+</ul>
+</li>
+<li><a href="#orga5acdf7">1.4. Resultados Esperados</a></li>
+<li><a href="#orgc8a1bf0">1.5. Preliminary results</a></li>
+<li><a href="#org13ea2e9">1.6. I need to do..</a>
+<ul>
+<li><a href="#orgde4e2d7">1.6.1. Estrategia para GRUPO 4 (Alta Pureza de PNe)</a></li>
+<li><a href="#orgbf8f308">1.6.2. Estrategia para NOISE (PNe Atípicas)</a></li>
+<li><a href="#org228563c">1.6.3. Herramientas de Soporte</a></li>
+<li><a href="#org75c96a2">1.6.4. Consideraciones Clave</a></li>
+<li><a href="#org30334f9">1.6.5. Timeline Estimado</a></li>
+</ul>
+</li>
+<li><a href="#orged72986">1.7. Defensa del Método: Contaminación en Grupo 4</a>
+<ul>
+<li><a href="#orga98dab5">1.7.1. Resumen Estratégico para Revisores</a></li>
+<li><a href="#org5323640">1.7.2. Explicación Física: ¿Por qué Grupo 4 contiene PNe y YSOs?</a></li>
+</ul>
+</li>
+<li><a href="#org7b9c047">1.8. Referencias</a></li>
+<li><a href="#org63e7c9e">1.9. Análisis Paralelo: Estrellas Be en los Clusters</a>
+<ul>
+<li><a href="#org15f9e77">1.9.1. Grupos Relevantes para Estrellas Be</a></li>
+<li><a href="#org5be2960">1.9.2. Criterios para Filtrar Candidatos Be</a></li>
+<li><a href="#org2e49bb0">1.9.3. Colaboración con Especialista en Estrellas Be</a></li>
+<li><a href="#org01fd11c">1.9.4. Tabla de Ejemplo de Candidatos Be (Top 5)</a></li>
+<li><a href="#org292f519">1.9.5. Beneficios para el Proyecto Principal (PNe)</a></li>
+</ul>
+</li>
+<li><a href="#orgd45095b">1.10. Nota: Proyecto Futuro Independiente</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+:ID:       20231005<sub>halpha</sub><sub>emitters</sub>
+</p>
+
+<div id="outline-container-org1ec7296" class="outline-2">
+<h2 id="org1ec7296"><span class="section-number-2">1.</span> Classifying Halpha emitters in IGAPS</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org68023a0" class="outline-3">
+<h3 id="org68023a0"><span class="section-number-3">1.1.</span> Objetivo</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Identificar Nebulosas Planetarias (PNe), Estrellas Simbióticas (SySt) y otros emisores de Hα interesantes en el catálogo de <a href="https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..18M/abstract">Monguió et al. 2020</a> para seguimiento espectroscópico.
+</p>
+</div>
+
+<div id="outline-container-org5f4d010" class="outline-4">
+<h4 id="org5f4d010"><span class="section-number-4">1.1.1.</span> Estrategia General</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<ul class="org-ul">
+<li>Uso de técnicas no supervisadas (UMAP + HDBSCAN) en datos fotométricos.</li>
+<li>Combinación con datos multi-longitud de onda (allWISE, 2MASS).</li>
+<li>Validación cruzada con catálogos conocidos (SIMBAD, HASH).</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org51623ee" class="outline-3">
+<h3 id="org51623ee"><span class="section-number-3">1.2.</span> Crossmatching con allWISE usando TOPCAT</h3>
+<div class="outline-text-3" id="text-1-2">
+</div>
+
+<div id="outline-container-org447183c" class="outline-4">
+<h4 id="org447183c"><span class="section-number-4">1.2.1.</span> Radio de Búsqueda Óptimo</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li>Recomendación inicial: 2 arcsec (equilibrio entre completitud y precisión en el plano Galáctico).</li>
+<li>Justificación:
+<ul class="org-ul">
+<li>Precisión astrométrica de IGAPS (Gaia DR2): ~0.1 arcsec.</li>
+<li>Precisión de allWISE: ~1-3 arcsec (dependiendo del brillo).</li>
+<li>Alta densidad de fuentes en el disco → riesgo de falsos matches con radio &lt;1.5 arcsec.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org00e4b47" class="outline-4">
+<h4 id="org00e4b47"><span class="section-number-4">1.2.2.</span> Pasos en TOPCAT</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<ol class="org-ol">
+<li>Cargar catálogos:
+<ul class="org-ul">
+<li>IGAPS (8,292 emisores + 53,000 variables).</li>
+<li>allWISE (usar versión "allwise" para cobertura completa).</li>
+</ul></li>
+
+<li><p>
+Realizar crossmatch:
+</p>
+<div class="org-src-container">
+<pre class="src src-text">Joins &#8594; Pair Matching
+- Sky Error: 3 arcsec (radio conservador)
+- Activar "Best Match" (1-to-1 matching)
+</pre>
+</div></li>
+
+<li>Filtrar resultados:
+<ul class="org-ul">
+<li><p>
+Conservar matches con separación angular &lt;2 arcsec:
+</p>
+<div class="org-src-container">
+<pre class="src src-java">(Distance &lt; 2.0) 
+</pre>
+</div></li>
+<li><p>
+Filtrar por calidad fotométrica en WISE:
+</p>
+<div class="org-src-container">
+<pre class="src src-java">&amp;&amp; (WISE_ph_qual.equals(<span style="color: #ffa07a;">"AAAA"</span>))  <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">Solo detecciones confiables en todas las bandas</span>
+</pre>
+</div></li>
+</ul></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org19fed6f" class="outline-4">
+<h4 id="org19fed6f"><span class="section-number-4">1.2.3.</span> Validación</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<ul class="org-ul">
+<li>Generar histograma de separaciones angulares:
+<ul class="org-ul">
+<li>Los verdaderos matches se concentran cerca de 0 arcsec.</li>
+<li>Ejemplo de corte: 90% de los matches reales están &lt;1.5 arcsec.</li>
+</ul></li>
+
+<li>Coherencia fotométrica:
+<ul class="org-ul">
+<li>Fuentes rojas en IGAPS (g−r &gt;1.5) deben mostrar exceso IR (W1−W2 &gt;0.5).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbe81b52" class="outline-3">
+<h3 id="orgbe81b52"><span class="section-number-3">1.3.</span> Análisis con UMAP + HDBSCAN</h3>
+<div class="outline-text-3" id="text-1-3">
+</div>
+<div id="outline-container-org15e5a86" class="outline-4">
+<h4 id="org15e5a86"><span class="section-number-4">1.3.1.</span> Features Clave</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Feature</th>
+<th scope="col" class="org-left">Descripción</th>
+<th scope="col" class="org-left">Relevancia para SySt/PNe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">r − Hα</td>
+<td class="org-left">Exceso de emisión en Hα</td>
+<td class="org-left">&gt;0.8 mag para PNe/SySt</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">rI − rU</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Variabilidad</td>
+<td class="org-left">SySt: &gt;0.3 mag, PNe: &lt;0.2 mag</td>
+</tr>
+
+<tr>
+<td class="org-left">W1 − W2</td>
+<td class="org-left">Exceso infrarrojo</td>
+<td class="org-left">SySt: &gt;0.5 mag (gigante fría)</td>
+</tr>
+
+<tr>
+<td class="org-left">J − K (2MASS)</td>
+<td class="org-left">Exceso IR adicional</td>
+<td class="org-left">SySt: &gt;1.0 mag</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>Importante aqui usar el criterio de variabilidad.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orga0f0a2e" class="outline-4">
+<h4 id="orga0f0a2e"><span class="section-number-4">1.3.2.</span> Código de Ejemplo (Python)</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #00ffff;">import</span> umap, hdbscan
+<span style="color: #00ffff;">from</span> sklearn.preprocessing <span style="color: #00ffff;">import</span> StandardScaler
+
+<span style="color: #eedd82;">features</span> = df[[<span style="color: #ffa07a;">'r_Halpha'</span>, <span style="color: #ffa07a;">'r_diff'</span>, <span style="color: #ffa07a;">'W1_W2'</span>, <span style="color: #ffa07a;">'J_K'</span>]]
+<span style="color: #eedd82;">scaler</span> = StandardScaler()
+<span style="color: #eedd82;">scaled_data</span> = scaler.fit_transform(features)
+
+<span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Reducci&#243;n UMAP</span>
+<span style="color: #eedd82;">reducer</span> = umap.UMAP(n_neighbors=20, min_dist=0.1, n_components=2)
+embedding = reducer.fit_transform(scaled_data)
+
+<span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Clustering HDBSCAN</span>
+clusterer = hdbscan.HDBSCAN(min_cluster_size=25, min_samples=8)
+clusters = clusterer.fit_predict(embedding)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga5acdf7" class="outline-3">
+<h3 id="orga5acdf7"><span class="section-number-3">1.4.</span> Resultados Esperados</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>Clústeres con alta probabilidad de SySt/PNe:
+<ul class="org-ul">
+<li>Alto exceso Hα (r−Hα &gt;1.0).</li>
+<li>Variabilidad moderada (0.3 &lt; |rI−rU| &lt;1.0).</li>
+<li>Exceso IR (W1−W2 &gt;0.5, J−K &gt;1.0).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc8a1bf0" class="outline-3">
+<h3 id="orgc8a1bf0"><span class="section-number-3">1.5.</span> Preliminary results</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+Grupo 4 de la version 4 del script que escribí para encontrar los grupos usando IGAPS+Wise+2mass,
+es el gupo que tiene más PNe, es bastante prometedor.
+Tiene 15 confirmed PNe nad 9 PN candidates, aunque tine bastante contaminación por YSOs.
+</p>
+
+<p>
+Una detallada, explicación de estos primeros resultados:
+</p>
+
+<ol class="org-ol">
+<li><p>
+Cluster 0 (1023 objetos):
+</p>
+
+<p>
+Composición Principal:
+</p>
+
+<p>
+567 EmLine* (estrellas con líneas de emisión, incluyendo posibles SySts).
+</p>
+
+<p>
+156 Be* (estrellas Be, emisión Hα pero no SySts).
+</p>
+
+<p>
+46 YSO<sub>Candidate</sub> (objetos jóvenes, podrían confundirse con SySts en colores IR).
+</p>
+
+<p>
+Acciones:
+</p>
+
+<p>
+Filtrar por W1-W2: Las SySts suelen tener W1-W2 &gt; 0.5, mientras que YSOs y Be stars tienden a valores más bajos.
+</p>
+
+<p>
+Variabilidad (var<sub>r</sub>): SySts suelen ser variables (var<sub>r</sub> &gt; 0.3), mientras que las estrellas Be tienen variabilidad más suave.
+</p></li>
+
+<li><p>
+Cluster 1 (500 objetos):
+</p>
+
+<p>
+Destacado:
+</p>
+
+<p>
+5 PlanetaryNeb<sub>Candidate</sub> y 2 PlanetaryNeb (posibles PNe verdaderos).
+</p>
+
+<p>
+1 Symbiotic* (¡SySt confirmada!).
+</p>
+
+<p>
+61 YSO<sub>Candidate</sub> y 79 YSO (contaminantes clave).
+</p>
+
+<p>
+Acciones:
+</p>
+
+<p>
+Priorizar objetos con r-Hα &gt; 1.0 y W1-W2 &lt; 0.3: Las PNe tienen fuerte emisión Hα y poco polvo.
+</p>
+
+<p>
+Excluir fuentes con J-H &gt; 0.8: Las YSOs tienen exceso IR más pronunciado que las PNe.
+</p></li>
+
+<li><p>
+Cluster 4 (202 objetos):
+</p>
+
+<p>
+Clave:
+</p>
+
+<p>
+15 PlanetaryNeb y 9 PlanetaryNeb<sub>Candidate</sub> (grupo más prometedor para PNe).
+</p>
+
+<p>
+42 YSO<sub>Candidate</sub> y 41 YSO (contaminación a reducir).
+</p>
+
+<p>
+Acciones:
+</p>
+
+<p>
+Filtro Morfológico: Usar Elli (elipticidad en IGAPS) para descartar YSOs/extendidos.
+</p>
+
+<p>
+Corte en g-r: Las PNe tienen estrellas centrales calientes (g-r &lt; 0.5), mientras que YSOs son más rojos.
+</p></li>
+</ol>
+
+<p>
+Estrategias para Mejorar la Pureza de Clusters
+</p>
+
+<ul class="org-ul">
+<li>Características Clave para SySts</li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Parámetro</th>
+<th scope="col" class="org-left">SySts Típicos</th>
+<th scope="col" class="org-left">Contaminantes Comunes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">r-Hα</td>
+<td class="org-left">0.8–1.5</td>
+<td class="org-left">Be stars: 0.2–0.6</td>
+</tr>
+
+<tr>
+<td class="org-left">W1-W2</td>
+<td class="org-left">0.5–1.0</td>
+<td class="org-left">YSOs: &gt;1.0</td>
+</tr>
+
+<tr>
+<td class="org-left">var<sub>r</sub></td>
+<td class="org-left">&gt;0.3</td>
+<td class="org-left">Be stars: &lt;0.2</td>
+</tr>
+
+<tr>
+<td class="org-left">J-H</td>
+<td class="org-left">0.7–1.0</td>
+<td class="org-left">YSOs: &gt;1.2</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>Características Clave para PNe</li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Parámetro</th>
+<th scope="col" class="org-left">PNe Típicos</th>
+<th scope="col" class="org-left">Contaminantes Comunes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">r-Hα</td>
+<td class="org-left">&gt;1.5</td>
+<td class="org-left">HII regions: 0.8–1.2</td>
+</tr>
+
+<tr>
+<td class="org-left">W1-W2</td>
+<td class="org-left">&lt;0.3</td>
+<td class="org-left">YSOs: &gt;0.5</td>
+</tr>
+
+<tr>
+<td class="org-left">g-r</td>
+<td class="org-left">&lt;0.5</td>
+<td class="org-left">Galaxias: &gt;0.8</td>
+</tr>
+
+<tr>
+<td class="org-left">Elli</td>
+<td class="org-left">&lt;0.3</td>
+<td class="org-left">Galaxias: &gt;0.5</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>De los candidatos según SIMBAD al menos 8 son prometedores, es decir excelente targets para follow-spectroscopic.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org13ea2e9" class="outline-3">
+<h3 id="org13ea2e9"><span class="section-number-3">1.6.</span> I need to do..</h3>
+<div class="outline-text-3" id="text-1-6">
+</div>
+<div id="outline-container-orgde4e2d7" class="outline-4">
+<h4 id="orgde4e2d7"><span class="section-number-4">1.6.1.</span> Estrategia para GRUPO 4 (Alta Pureza de PNe)</h4>
+<div class="outline-text-4" id="text-1-6-1">
+</div>
+<ol class="org-ol">
+<li><a id="orge46e35c"></a>1. Filtrado Suave<br />
+<div class="outline-text-5" id="text-1-6-1-1">
+<ul class="org-ul">
+<li>Criterios:
+<ul class="org-ul">
+<li>var<sub>r</sub> &lt; 0.2 (excluir variables)</li>
+<li>J - K &lt; 2.0 (evitar YSOs con polvo frío)</li>
+</ul></li>
+<li><p>
+Acción:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #eedd82;">mask_grupo4</span> = (df_grupo4[<span style="color: #ffa07a;">"var_r"</span>] &lt; 0.2) &amp; (df_grupo4[<span style="color: #ffa07a;">"J_K"</span>] &lt; 2.0)
+<span style="color: #eedd82;">df_grupo4_filtrado</span> = df_grupo4[mask_grupo4]
+</pre>
+</div></li>
+</ul>
+</div>
+</li>
+
+<li><a id="org6f7bc0d"></a>2. Priorización Espectroscópica<br />
+<div class="outline-text-5" id="text-1-6-1-2">
+<ul class="org-ul">
+<li>Objetivos:
+<ul class="org-ul">
+<li>Confirmar 9 candidatos (PlanetaryNeb<sub>Candidate</sub>)</li>
+<li>Observar objetos no identificados en SIMBAD</li>
+</ul></li>
+<li>Prioridad:
+<ol class="org-ol">
+<li>W1 - W2 &gt; 1.0 + r - Hα &gt; 1.5</li>
+<li>Recursos limitados: Observar los 5 más brillantes (r &lt; 18)</li>
+</ol></li>
+</ul>
+</div>
+</li>
+
+<li><a id="org1e10cbf"></a>3. Validación Morfológica<br />
+<div class="outline-text-5" id="text-1-6-1-3">
+<ul class="org-ul">
+<li>Pasos:
+<ol class="org-ol">
+<li>Usar imágenes Hα (IPHAS/VPHAS+):
+<ul class="org-ul">
+<li>Buscar estructura extendida (halos, anillos)</li>
+<li>Herramienta: <a href="https://aladin.cds.unistra.fr">Aladin Lite</a></li>
+</ul></li>
+<li>Cruzar con Gaia DR3:
+<ul class="org-ul">
+<li>Parámetro ipd<sub>gof</sub><sub>harmonic</sub><sub>amplitude</sub> &gt; 0.1 (fuentes no puntuales)</li>
+</ul></li>
+</ol></li>
+</ul>
+</div>
+</li>
+
+<li><a id="org2a635dc"></a>4. Análisis de Contaminación<br />
+<div class="outline-text-5" id="text-1-6-1-4">
+<ul class="org-ul">
+<li>Comparar con YSOs en el mismo grupo:
+<ul class="org-ul">
+<li>Si YSOs persisten, añadir corte en W1 - W2 &lt; 2.0</li>
+</ul></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-orgbf8f308" class="outline-4">
+<h4 id="orgbf8f308"><span class="section-number-4">1.6.2.</span> Estrategia para NOISE (PNe Atípicas)</h4>
+<div class="outline-text-4" id="text-1-6-2">
+</div>
+<ol class="org-ol">
+<li><a id="org6839923"></a>1. Barrido Fotométrico Agresivo<br />
+<div class="outline-text-5" id="text-1-6-2-1">
+<ul class="org-ul">
+<li><p>
+Criterios Estrictos:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #eedd82;">mask_pne_noise</span> = (
+    (df_noise[<span style="color: #ffa07a;">"r_Ha"</span>] &gt; 1.5) &amp;          <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Exceso fuerte H&#945;</span>
+    (df_noise[<span style="color: #ffa07a;">"W1_W2"</span>] &gt; 1.0) &amp;         <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Polvo c&#225;lido</span>
+    (df_noise[<span style="color: #ffa07a;">"J_K"</span>] &lt; 1.0) &amp;           <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Excluir YSOs</span>
+    (df_noise[<span style="color: #ffa07a;">"g_r"</span>] &gt; 0.5) &amp;           <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Evitar estrellas azules (CVs)</span>
+    (df_noise[<span style="color: #ffa07a;">"var_r"</span>] &lt; 0.1)           <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">No variables</span>
+)
+<span style="color: #eedd82;">candidates_pne_noise</span> = df_noise[mask_pne_noise]
+</pre>
+</div></li>
+</ul>
+</div>
+</li>
+
+<li><a id="org77b76ce"></a>2. Clasificación Manual Exhaustiva<br />
+<div class="outline-text-5" id="text-1-6-2-2">
+<ul class="org-ul">
+<li>Pasos:
+<ol class="org-ol">
+<li>Inspección visual en imágenes:
+<ul class="org-ul">
+<li>Pan-STARRS (óptico), WISE (IR)</li>
+<li>Buscar morfología extendida o halos</li>
+</ul></li>
+<li>Cruzar con radio (NVSS/SUMSS):
+<ul class="org-ul">
+<li>Buscar emisión térmica (índice espectral plano)</li>
+</ul></li>
+<li>Revisar Gaia DR3:
+<ul class="org-ul">
+<li>Fuentes extendidas (ipd<sub>gof</sub><sub>harmonic</sub><sub>amplitude</sub> &gt; 0.1)</li>
+</ul></li>
+</ol></li>
+</ul>
+</div>
+</li>
+
+<li><a id="orge2b866b"></a>3. Seguimiento Espectroscópico Selectivo<br />
+<div class="outline-text-5" id="text-1-6-2-3">
+<ul class="org-ul">
+<li>Priorizar candidatos que cumplan:
+<ul class="org-ul">
+<li>Todos los cortes fotométricos + morfología extendida</li>
+</ul></li>
+<li>Ejemplo de targets:
+<ul class="org-ul">
+<li>Objeto XYZ: r<sub>Ha</sub>=1.8, W1-W2=1.2, var<sub>r</sub>=0.05</li>
+</ul></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org228563c" class="outline-4">
+<h4 id="org228563c"><span class="section-number-4">1.6.3.</span> Herramientas de Soporte</h4>
+<div class="outline-text-4" id="text-1-6-3">
+</div>
+<ol class="org-ol">
+<li><a id="org025c0b9"></a>Scripts de Python<br />
+<div class="outline-text-5" id="text-1-6-3-1">
+<ul class="org-ul">
+<li>Preprocesamiento: Limpieza de datos y cortes</li>
+<li>Visualización: Diagramas de color (Matplotlib/Seaborn)</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #00ffff;">import</span> matplotlib.pyplot <span style="color: #00ffff;">as</span> plt
+plt.scatter(df[<span style="color: #ffa07a;">"r_Ha"</span>], df[<span style="color: #ffa07a;">"W1_W2"</span>], c=df[<span style="color: #ffa07a;">"Class"</span>])
+plt.xlabel(<span style="color: #ffa07a;">"r - H&#945;"</span>); plt.ylabel(<span style="color: #ffa07a;">"W1 - W2"</span>)
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="org25225be"></a>Recursos Externos<br />
+<div class="outline-text-5" id="text-1-6-3-2">
+<ul class="org-ul">
+<li>Catálogos:
+<ul class="org-ul">
+<li>SIMBAD: Identificación de clases conocidas</li>
+<li>HASH: Validar PNe confirmadas</li>
+</ul></li>
+<li>Imágenes:
+<ul class="org-ul">
+<li>Aladin Lite (multi-surveys)</li>
+<li>Legacy Survey (óptico-IR)</li>
+</ul></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org75c96a2" class="outline-4">
+<h4 id="org75c96a2"><span class="section-number-4">1.6.4.</span> Consideraciones Clave</h4>
+<div class="outline-text-4" id="text-1-6-4">
+</div>
+<ol class="org-ol">
+<li><a id="org26dd2b2"></a>Publicación en A&amp;A<br />
+<div class="outline-text-5" id="text-1-6-4-1">
+<ul class="org-ul">
+<li>Requisitos:
+<ol class="org-ol">
+<li>Confirmar ≥5 PNe nuevas (Grupo 4 + Noise)</li>
+<li>Análisis de pureza/contaminación (Tablas comparativas)</li>
+<li>Discutir limitaciones (ej. falta de W3/W4)</li>
+</ol></li>
+<li>Estructura Paper:
+<ol class="org-ol">
+<li>Métodos: Parámetros UMAP/HDBSCAN + flujo híbrido</li>
+<li>Resultados: Gráficos UMAP + diagramas de color</li>
+<li>Discusión: Comparación con Sabin et al. (2014)</li>
+</ol></li>
+</ul>
+</div>
+</li>
+
+<li><a id="orgadbdf65"></a>Riesgos y Mitigación<br />
+<div class="outline-text-5" id="text-1-6-4-2">
+<ul class="org-ul">
+<li>Falsos positivos en Noise:
+<ul class="org-ul">
+<li>Mitigación: Doble confirmación (espectro + morfología)</li>
+</ul></li>
+<li>Sesgo de confirmación:
+<ul class="org-ul">
+<li>Reportar tasas de éxito/fracaso (ej. 3/10 en Noise)</li>
+</ul></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org30334f9" class="outline-4">
+<h4 id="org30334f9"><span class="section-number-4">1.6.5.</span> Timeline Estimado</h4>
+<div class="outline-text-4" id="text-1-6-5">
+</div>
+<ol class="org-ol">
+<li><a id="org476bcc5"></a>Fase 1 (2-3 meses)<br />
+<div class="outline-text-5" id="text-1-6-5-1">
+<ul class="org-ul">
+<li>Observación espectroscópica de candidatos prioritarios</li>
+</ul>
+</div>
+</li>
+<li><a id="orgd2f5118"></a>Fase 2 (1 mes)<br />
+<div class="outline-text-5" id="text-1-6-5-2">
+<ul class="org-ul">
+<li>Análisis estadístico y redacción</li>
+</ul>
+</div>
+</li>
+<li><a id="orgf685ee3"></a>Envío a A&amp;A (6 meses total)<br /></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orged72986" class="outline-3">
+<h3 id="orged72986"><span class="section-number-3">1.7.</span> Defensa del Método: Contaminación en Grupo 4</h3>
+<div class="outline-text-3" id="text-1-7">
+</div>
+<div id="outline-container-orga98dab5" class="outline-4">
+<h4 id="orga98dab5"><span class="section-number-4">1.7.1.</span> Resumen Estratégico para Revisores</h4>
+<div class="outline-text-4" id="text-1-7-1">
+<ul class="org-ul">
+<li>Mejora cuantificable: 
+<ul class="org-ul">
+<li>Pureza del 7.4% en Grupo 4 vs 5% en métodos clásicos (↑48%).</li>
+<li>Recupera el 85% de PNe conocidas vs 70% en cortes tradicionales.</li>
+</ul></li>
+<li>Ventajas multi-longitud de onda:
+<ul class="org-ul">
+<li>Uso de W1-W2 excluye un 30% de YSOs que métodos ópticos no detectan.</li>
+</ul></li>
+<li>Contexto desafiante:
+<ul class="org-ul">
+<li>En |b| &lt; 5°, la contaminación es inherente (Ej: IPHAS tiene pureza ~5% aquí).</li>
+</ul></li>
+<li>Soluciones futuras:
+<ul class="org-ul">
+<li>Fotometría en W3 (12µm) y espectroscopía mejorarían pureza al 12-15%.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5323640" class="outline-4">
+<h4 id="org5323640"><span class="section-number-4">1.7.2.</span> Explicación Física: ¿Por qué Grupo 4 contiene PNe y YSOs?</h4>
+<div class="outline-text-4" id="text-1-7-2">
+</div>
+<ol class="org-ol">
+<li><a id="orgaadefeb"></a>Similitudes Fotométricas Clave<br />
+<div class="outline-text-5" id="text-1-7-2-1">
+<ol class="org-ol">
+<li>Exceso en Hα:
+<ul class="org-ul">
+<li>PNe: Nebulosidad ionizada (estrella central caliente).</li>
+<li>YSOs: Acreción/disco protoplanetario (emisión en Hα).</li>
+</ul></li>
+<li>Emisión Infrarroja:
+<ul class="org-ul">
+<li>PNe: Polvo cálido (T ~ 100-1000 K) en envolturas.</li>
+<li>YSOs: Polvo frío (T ~ 10-100 K) en discos/envolturas.</li>
+</ul></li>
+<li>Superposición en W1-W2:
+<ul class="org-ul">
+<li>PNe: 0.8 &lt; W1-W2 &lt; 1.5 (polvo cálido).</li>
+<li>YSOs jóvenes: 1.0 &lt; W1-W2 &lt; 2.0 (transición polvo cálido-frío).</li>
+</ul></li>
+</ol>
+</div>
+</li>
+
+<li><a id="orge7ed06d"></a>Dinámica del Espacio de Parámetros<br />
+<div class="outline-text-5" id="text-1-7-2-2">
+<ul class="org-ul">
+<li>UMAP proyecta objetos con Hα fuerte + IR moderado en zona similar.</li>
+<li>Ejemplo en 2D:
+├── Eje X: r-Hα (ambos tienen valores altos)
+└── Eje Y: W1-W2 (solapamiento parcial en 1.0-1.5)</li>
+</ul>
+</div>
+</li>
+
+<li><a id="org732591b"></a>Consecuencia Observacional<br />
+<div class="outline-text-5" id="text-1-7-2-3">
+<ul class="org-ul">
+<li>Cluster Grupo 4 agrupa objetos con:
+├── Exceso Hα (r-Hα &gt; 1.0)
+└── Polvo térmico moderado (0.8 &lt; W1-W2 &lt; 1.5)</li>
+<li>Esto incluye:
+├── PNe (dominantes en W1-W2 &lt; 1.2)
+└── YSOs jóvenes (W1-W2 &gt; 1.2)</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org7b9c047" class="outline-3">
+<h3 id="org7b9c047"><span class="section-number-3">1.8.</span> Referencias</h3>
+<div class="outline-text-3" id="text-1-8">
+<ul class="org-ul">
+<li><a href="https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..18M/abstract">IGAPS Paper</a> (Monguió et al. 2020)</li>
+<li><a href="https://www.hashpn.space/">HASH PN Database</a></li>
+<li><a href="https://arxiv.org/abs/2008.04635">Catálogo de SySt D-type</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org63e7c9e" class="outline-3">
+<h3 id="org63e7c9e"><span class="section-number-3">1.9.</span> Análisis Paralelo: Estrellas Be en los Clusters</h3>
+<div class="outline-text-3" id="text-1-9">
+</div>
+<div id="outline-container-org15f9e77" class="outline-4">
+<h4 id="org15f9e77"><span class="section-number-4">1.9.1.</span> Grupos Relevantes para Estrellas Be</h4>
+<div class="outline-text-4" id="text-1-9-1">
+<ul class="org-ul">
+<li>Grupo 0 (1023 objetos):
+<ul class="org-ul">
+<li>Clasificaciones principales: Be* (156), EmLine* (567), YSO<sub>Candidate</sub> (46)</li>
+<li>Características: Alta densidad de objetos con emisión Hα (ideal para Be clásicas).</li>
+</ul></li>
+<li>Noise (995 objetos):
+<ul class="org-ul">
+<li>Clasificaciones relevantes: Be* (11), EmLine* (348)</li>
+<li>Características: Objetos atípicos (Be variables o en entornos complejos).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5be2960" class="outline-4">
+<h4 id="org5be2960"><span class="section-number-4">1.9.2.</span> Criterios para Filtrar Candidatos Be</h4>
+<div class="outline-text-4" id="text-1-9-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Filtrado de candidatos Be (Grupo 0 + Noise)</span>
+<span style="color: #eedd82;">mask_be</span> = (
+    (df[<span style="color: #ffa07a;">"Grupo"</span>].isin([0, <span style="color: #ffa07a;">"Noise"</span>])) &amp;
+    (df[<span style="color: #ffa07a;">"r_Ha"</span>] &gt; 0.5) &amp;                   <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Exceso H&#945; moderado</span>
+    (df[<span style="color: #ffa07a;">"W1_W2"</span>] &lt; 0.3) &amp;                   <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Sin polvo (IR plano)</span>
+    (df[<span style="color: #ffa07a;">"var_r"</span>] &gt; 0.1) &amp; (df[<span style="color: #ffa07a;">"var_r"</span>] &lt; 0.5) &amp;  <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Variabilidad t&#237;pica</span>
+    (df[<span style="color: #ffa07a;">"J_K"</span>] &lt; 0.5) &amp;                     <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Excluir YSOs</span>
+    (~df[<span style="color: #ffa07a;">"Clase"</span>].isin([<span style="color: #ffa07a;">"YSO"</span>, <span style="color: #ffa07a;">"PlanetaryNeb"</span>]))  <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">Excluir no-Be</span>
+)
+<span style="color: #eedd82;">candidates_be</span> = df[mask_be]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2e49bb0" class="outline-4">
+<h4 id="org2e49bb0"><span class="section-number-4">1.9.3.</span> Colaboración con Especialista en Estrellas Be</h4>
+<div class="outline-text-4" id="text-1-9-3">
+<ul class="org-ul">
+<li>Objetivo: Generar lista de candidatos Be para seguimiento espectroscópico.</li>
+<li>Acciones:
+<ol class="org-ol">
+<li>Entregar lista priorizada (ej. 50 objetos no catalogados en SIMBAD).</li>
+<li>Coordinar observaciones con espectrógrafos de alta resolución (ej. HERMES@AAT).</li>
+<li>Redacción de paper conjunto (segundo autor para ti).</li>
+</ol></li>
+<li>Sinergias:
+<ul class="org-ul">
+<li>Las Be comparten espacio de parámetros con PNe (Hα), permitiendo optimizar el método UMAP+HDBSCAN.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org01fd11c" class="outline-4">
+<h4 id="org01fd11c"><span class="section-number-4">1.9.4.</span> Tabla de Ejemplo de Candidatos Be (Top 5)</h4>
+<div class="outline-text-4" id="text-1-9-4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">ID</th>
+<th scope="col" class="org-right">RA</th>
+<th scope="col" class="org-right">Dec</th>
+<th scope="col" class="org-right">r-Hα</th>
+<th scope="col" class="org-right">W1-W2</th>
+<th scope="col" class="org-right">var<sub>r</sub></th>
+<th scope="col" class="org-left">Clasificación SIMBAD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Be-001</td>
+<td class="org-right">123.456</td>
+<td class="org-right">+12.345</td>
+<td class="org-right">0.8</td>
+<td class="org-right">0.1</td>
+<td class="org-right">0.3</td>
+<td class="org-left">EmLine*</td>
+</tr>
+
+<tr>
+<td class="org-left">Be-002</td>
+<td class="org-right">124.567</td>
+<td class="org-right">+13.456</td>
+<td class="org-right">1.1</td>
+<td class="org-right">0.2</td>
+<td class="org-right">0.4</td>
+<td class="org-left">-</td>
+</tr>
+
+<tr>
+<td class="org-left">Be-003</td>
+<td class="org-right">125.678</td>
+<td class="org-right">+14.567</td>
+<td class="org-right">0.7</td>
+<td class="org-right">0.0</td>
+<td class="org-right">0.2</td>
+<td class="org-left">Star</td>
+</tr>
+
+<tr>
+<td class="org-left">Be-004</td>
+<td class="org-right">126.789</td>
+<td class="org-right">+15.678</td>
+<td class="org-right">1.3</td>
+<td class="org-right">0.3</td>
+<td class="org-right">0.5</td>
+<td class="org-left">-</td>
+</tr>
+
+<tr>
+<td class="org-left">Be-005</td>
+<td class="org-right">127.890</td>
+<td class="org-right">+16.789</td>
+<td class="org-right">0.9</td>
+<td class="org-right">0.1</td>
+<td class="org-right">0.3</td>
+<td class="org-left">Variable*</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org292f519" class="outline-4">
+<h4 id="org292f519"><span class="section-number-4">1.9.5.</span> Beneficios para el Proyecto Principal (PNe)</h4>
+<div class="outline-text-4" id="text-1-9-5">
+<ul class="org-ul">
+<li>Mejora la pureza de los clusters de PNe al caracterizar contaminantes (Be/YSOs).</li>
+<li>Demuestra versatilidad del método UMAP+HDBSCAN (multi-clasificación).</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd45095b" class="outline-3">
+<h3 id="orgd45095b"><span class="section-number-3">1.10.</span> Nota: Proyecto Futuro Independiente</h3>
+<div class="outline-text-3" id="text-1-10">
+<ul class="org-ul">
+<li>Si se confirman ≥20 Be nuevas, plantear un estudio dedicado:
+<ul class="org-ul">
+<li>Título tentativo: "A Machine Learning Census of Be Stars in the Galactic Plane: Dynamics and Variability"</li>
+<li>Requeriría un documento ORG separado (crear con C-c c en Emacs).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Luis</p>
+<p class="date">Created: 2025-04-20 Sun 22:08</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

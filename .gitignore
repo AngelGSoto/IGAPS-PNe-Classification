@@ -1,0 +1,38 @@
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# Datos y archivos grandes
+*.csv
+*.fits
+*.dat
+*.ecsv
+*.zip
+*.tar.gz
+
+# Entorno virtual
+venv/
+.env/
+.env.local
+
+# Sistemas operativos
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+
+# IDEs
+.vscode/
+.idea/
+
+# Exclude files with certain suffixes or patterns
+*~
+*#
+#*
+programs/.#splus_vphas.py
+notebooks/.ipynb_checkpoints/ploblematic-disk-fields-checkpoint.ipynb
