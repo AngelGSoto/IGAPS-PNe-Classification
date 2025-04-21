@@ -5,7 +5,8 @@
 
 * Classifying Halpha emitters in IGAPS
 ** Objetivo
-Identificar Nebulosas Planetarias (PNe), Estrellas Simbióticas (SySt) y otros emisores de Hα interesantes en el catálogo de [[https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..18M/abstract][Monguió et al. 2020]] para seguimiento espectroscópico.
+Identificar Nebulosas Planetarias (PNe), Estrellas Simbióticas (SySt) y otros emisores de Hα interesantes
+en el catálogo de [[https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..18M/abstract][Monguió et al. 2020]] para seguimiento espectroscópico.
 
 *** Estrategia General
 - Uso de técnicas no supervisadas (UMAP + HDBSCAN) en datos fotométricos.
@@ -59,7 +60,7 @@ Identificar Nebulosas Planetarias (PNe), Estrellas Simbióticas (SySt) y otros e
 | Feature          | Descripción                             | Relevancia para SySt/PNe          |
 |------------------+-----------------------------------------+------------------------------------|
 | r − Hα           | Exceso de emisión en Hα                 | >0.8 mag para PNe/SySt             |
-| |rI − rU|         | Variabilidad                            | SySt: >0.3 mag, PNe: <0.2 mag      |
+| abs(rI − rU)      | Variabilidad                            | SySt: >0.3 mag, PNe: <0.2 mag      |
 | W1 − W2          | Exceso infrarrojo                       | SySt: >0.5 mag (gigante fría)      |
 | J − K (2MASS)    | Exceso IR adicional                     | SySt: >1.0 mag                     |
 
