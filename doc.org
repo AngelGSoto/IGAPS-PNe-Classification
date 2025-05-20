@@ -309,6 +309,117 @@ Estrategias para Mejorar la Pureza de Clusters
   └── YSOs jóvenes (W1-W2 > 1.2)
 
   + Hcer un teste usando W3 y W4
+
+** PROYECTO: Results from IALP computer
+
+*** Clusters identificados
+- Total clusters: 6 + ruido
+- Foco en =Grupo 4= (301 objetos, 182 con SIMBAD)
+
+** Análisis del Grupo 4 (301 objetos)
+*** Distribución SIMBAD (182 objetos)
+| Clasificación SIMBAD      | Cantidad |
+|---------------------------|----------|
+| PlanetaryNeb              | 16       |
+| PlanetaryNeb_Candidate    | 7        |
+| YSO/YSO_Candidate         | 77       |
+| TTauri*                   | 19       |
+| Star                      | 16       |
+| Otros                     | 47       |
+*** Objetos sin SIMBAD (119 objetos)
+- Candidatos prioritarios para nuevas PNe
+*** Paper Stavros
+   - [[https://ui.adsabs.harvard.edu/abs/2019MNRAS.488.3238A/abstract][Akras]] have aditional color cuts in the IR for PNe candiidates selection.
+      Three different classification tree models were found that identify
+      PNe in the best possible way: 
+     + M1: W1 − W4 ≥ 7.87 and J − H < 1.10
+     + M2: H − W2 ≥ 2.24 and J − H < 0.50 and 
+     + M3: Ks − W3 ≥ 6.42 and J − H < 1.31 
+
+    Given I am using just the W1 and W2 for WISE. I think, I am only use model M2. I and also want to use the color W1 - W2.
+
+** Próximos Pasos (Acciones)
+*** PRIORIDAD A: Filtrado de candidatos
+**** [ ] Filtros fotométricos (119 objetos sin SIMBAD)
+#+BEGIN_SRC
+Criterios:
+1. r_Ha > 0.5 (emisión Hα fuerte)
+2. W1-W2 > 1.0 (exceso IR por polvo)
+3. var_r < 0.1 (baja variabilidad)
+#+END_SRC
+
+**** [ ] Revisión SIMBAD (159 objetos no-PNe)
+- Buscar objetos mal clasificados con:
+  - r_Ha > 0.8
+  - W1-W2 > 1.5
+
+*** PRIORIDAD B: Validación Observacional
+**** [ ] Espectroscopía de seguimiento
+- Líneas clave a observar: [OIII]5007Å, Hα, [NII]6583Å
+- Requerimientos:
+  | Parámetro       | Especificación              |
+  |-----------------|-----------------------------|
+  | Resolución (R)  | > 500                       |
+  | Cobertura       | 4800-7000 Å                 |
+  | Tiempo exposición | 30-60 min (r=18-20 mag)  |
+
+**** [ ] Imágenes de alta resolución (opcional)
+- Usar Pan-STARRS/IPHAS para morfología nebular
+- Buscar anillos/cáscaras (usar Aladin Lite)
+
+** Análisis Cuantitativo
+*** [ ] Pureza del Grupo 4
+#+BEGIN_SRC python
+pureza = (PNe_confirmadas_SIMBAD + nuevas_PNe) / 301
+#+END_SRC
+
+*** [ ] Completitud del modelo
+#+BEGIN_SRC python
+completitud = (PNe_recuperadas / PNe_totales_IGAPS) * 100
+#+END_SRC
+
+** Resultados Esperados
+*** Tabla de candidatos prioritarios (ejemplo)
+| ID     | RA      | Dec     | r_Ha | W1-W2 | Notas           |
+|--------|---------|---------|------|-------|-----------------|
+| J1234  | 12:34:56| +56:78:90| 0.9  | 1.2   | Morfología anillo |
+| ...    | ...     | ...     | ...  | ...   | ...             |
+
+*** Diagramas clave
+- [ ] r_Ha vs. W1-W2 (PNe vs. YSOs)
+- [ ] Proyección UMAP (Componentes 1-2)
+
+** Discusión/Artículo A&A
+*** Estructura propuesta
+1. Introducción (PNe + ML en astronomía)
+2. Datos y Métodos (IGAPS, UMAP/HDBSCAN)
+3. Resultados (Grupo 4 + espectroscopía)
+4. Discusión (Pureza/contaminantes + aplicaciones futuras)
+
+*** Puntos fuertes a destacar
+- Primer uso de UMAP+HDBSCAN para PNe en IGAPS
+- Combinación óptico/IR para separar poblaciones
+
+** Colaboraciones/Recursos
+*** Telescopios para follow-up
+- [ ] Enviar propuestas a GTC/VLT (espectroscopía)
+- [ ] Usar datos SDSS/LAMOST (si hay cobertura)
+
+*** Código
+- Repositorio GitHub: <<enlace>>
+- Scripts principales:
+  - preprocessing_IGAPS.py
+  - umap_hdbscan_clustering.ipynb
+
+** NOTAS
+*** Fechas clave
+- [ ] Filtrado candidatos: 2025-10-30
+- [ ] Propuesta telescopio: 2025-11-15
+- [ ] Primeros espectros: 2025-02-01
+
+*** Riesgos/Mitigación
+- Contaminación por YSOs: Añadir filtro de [OIII]/Hα
+- Baja pureza: Optimizar HDBSCAN (min_cluster_size=25)
   
 ** Referencias
 - [[https://ui.adsabs.harvard.edu/abs/2020A%26A...638A..18M/abstract][IGAPS Paper]] (Monguió et al. 2020)
@@ -361,7 +472,9 @@ candidates_be = df[mask_be]
 - Mejora la pureza de los clusters de PNe al caracterizar contaminantes (Be/YSOs).
 - Demuestra versatilidad del método UMAP+HDBSCAN (multi-clasificación).
 
+
 ** Nota: Proyecto Futuro Independiente
 - Si se confirman ≥20 Be nuevas, plantear un estudio dedicado:
-  + Título tentativo: "A Machine Learning Census of Be Stars in the Galactic Plane: Dynamics and Variability"
+  + Título tentativo: "A Machine Learning Census of Be Stars in the Galactic Plane: 
+Dynamics and Variability"
   + Requeriría un documento ORG separado (crear con C-c c en Emacs).
