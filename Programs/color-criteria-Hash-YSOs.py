@@ -12,8 +12,8 @@ from matplotlib.lines import Line2D
 # Configuración unificada de parámetros
 CONFIG = {
     'criterios': {
-        'W1W2_JH': {'a': 0.865, 'b': 0.75, 'type': 'vertical-horizontal', 'label': 'Corte principal'},
-        'HW2_JH': {'a': 2.7, 'b': 0.75, 'type': 'vertical-horizontal', 'label': 'Corte principal'},
+        'W1W2_JH': {'a': 0.75, 'b': 0.85, 'type': 'vertical-horizontal', 'label': 'Corte principal'},
+        'HW2_JH': {'a': 2.7, 'b': 0.85, 'type': 'vertical-horizontal', 'label': 'Corte principal'},
         'Akras_JH': {'value': 0.5, 'type': 'horizontal', 'style': '-.', 'color': '#C0392B', 'label': 'Akras et al. (2019)'},
         'Akras_HW2': {'value': 2.24, 'type': 'vertical', 'style': '-.', 'color': '#C0392B', 'label': 'Akras et al. (2019)'}
     },
